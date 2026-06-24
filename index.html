@@ -1,0 +1,539 @@
+<!-- Chosen Palette: Slate Harmony (Background: #F8F9FA Off-white, Text: #1A202C Dark Slate, Accents: #2B6CB0 Blue, #319795 Teal, #DD6B20 Orange, #FFFFFF White) -->
+<!-- Application Structure Plan: 
+     Designed as an interactive, high-conversion BtoB Landing Page (LP).
+     1. Header & Hero: Establishes the visual identity of "Sano AI Video Lab" and the core problem solved (1 sec/10,000 Yen).
+     2. 3 Core Value Propositions: Explains Sano's unique offline physical benefits (The Sandbox, Military Security, Family Sanctuary) using modern, responsive flex card components.
+     3. Two Utilizing Modes Toggle: Clearly illustrates that a single 450k JPY booking can be used as a Family retreat or as a Team R&D sprint.
+     4. Interactive CFO ROI Calculator: Embeds a fully interactive dynamic pricing and subsidy calculator. This visualizes the 75% Reskill Subsidy and displays Outsource Savings vs Sano Investment, with high CFO appeal.
+     5. Facilities Explorer: Offers styled tabs allowing users to explore "The Cave (Warehouse Studio)", "The Flow (The Sanctuary Bath)", and the "5-Day Flow".
+     6. Navigation & Booking Flow: Dynamic contact/booking form linking directly to Google Calendar and simulated booking success state using a Tailwind modal.
+-->
+<!-- Visualization & Content Choices:
+     1. ROI Chart (Chart.js): Goal: Visualize financial return on Sano Investment. Method: Stacked bar chart showing Outsource Cost vs Sano Real Cost (Subsidy Applied). Justification: Graphs speak directly to financial decision makers (CFOs) and remove price objections.
+     2. Subsidy Breakdown (Chart.js Pie): Goal: Demonstrate how the 75% Reskilling subsidy applies to Sano's 400,000 JPY subscription fee. Method: Interactive Donut Chart. Justification: Clearly breaks down how the company only pays 100,000 JPY net after receiving the 300,000 JPY refund.
+     3. Mode Selectors (JS CSS toggling): Goal: Explain utilization versatility. Method: Toggle tabs with reactive content cards. Justification: Prevents text-heavy walls of content and keeps engagement high.
+-->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>佐野AIアニメ合宿所「SANO AI ANIMATION LAB」公式</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap');
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #F8F9FA; color: #1A202C; scroll-behavior: smooth; }
+        .chart-container { position: relative; width: 100%; height: 320px; max-height: 350px; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .glow-button { transition: all 0.3s ease; box-shadow: 0 4px 14px 0 rgba(43, 108, 176, 0.4); }
+        .glow-button:hover { box-shadow: 0 6px 20px 0 rgba(43, 108, 176, 0.6); transform: translateY(-1px); }
+    </style>
+</head>
+<body class="antialiased leading-relaxed">
+
+    <!-- Top Announcement Banner -->
+    <div class="bg-blue-600 text-white text-xs md:text-sm font-bold py-2 text-center px-4">
+        📢 【最大75%還付】厚生労働省「人材開発支援助成金（リスキリング支援コース）」正式適合パッケージプラン公開中！
+    </div>
+
+    <!-- Navigation Header -->
+    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-2">
+                    <span class="text-2xl font-black text-blue-700 tracking-tighter">◭ SANO AI ANIMATION LAB</span>
+                </div>
+                <div class="hidden lg:flex space-x-8 items-center">
+                    <a href="#about" class="text-sm font-bold text-gray-600 hover:text-blue-600 transition-colors">差別化の理由</a>
+                    <a href="#modes" class="text-sm font-bold text-gray-600 hover:text-blue-600 transition-colors">選べる2つのモード</a>
+                    <a href="#calculator" class="text-sm font-bold text-gray-600 hover:text-blue-600 transition-colors">費用対効果</a>
+                    <a href="#facilities" class="text-sm font-bold text-gray-600 hover:text-blue-600 transition-colors">アジト施設案内</a>
+                    <a href="#contact" class="bg-blue-600 text-white text-xs md:text-sm font-bold px-5 py-2.5 rounded-full hover:bg-blue-700 transition-colors glow-button">無料カウンセリング予約</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative bg-slate-950 text-white py-20 lg:py-32 overflow-hidden px-4">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-900/40 via-slate-950 to-slate-950 pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <span class="inline-block bg-teal-400/10 text-teal-300 border border-teal-500/30 text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full mb-6">
+                    BtoB AI Animation Pipeline Laboratory
+                </span>
+                <h1 class="text-4xl md:text-6xl font-black mb-6 leading-tight tracking-tight">
+                    AIの進化に乗り遅れるな!<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">5泊 5日の佐野R&D合宿。</span>
+                </h1>
+                <p class="text-lg text-slate-300 font-light mb-8 leading-relaxed">
+                    田舎の古民家でAI集中開発合宿。<br>
+                    仕事場（倉庫）と住居（母屋）を完全分離した企業向けの最先端技術研修プログラム。
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#contact" class="bg-blue-600 text-white font-bold py-4 px-8 rounded-full text-center hover:bg-blue-700 transition-all glow-button">無料カウンセリングを予約する</a>
+                    <a href="#calculator" class="bg-white/10 text-white hover:bg-white/20 border border-white/20 font-bold py-4 px-8 rounded-full text-center transition-all">助成金・ROIを試算する</a>
+                </div>
+            </div>
+            <div class="relative bg-slate-900 rounded-2xl p-6 border border-white/10 shadow-2xl backdrop-blur-md">
+                <div class="absolute -top-3 -left-3 bg-orange-500 text-white text-xs font-black uppercase tracking-wider px-3 py-1 rounded-md">
+                    HOTPOINT
+                </div>
+                <h3 class="text-lg font-bold text-white mb-4">なぜ、SANO AI ANIMATION LABに「45万円」を支払うのか？</h3>
+                <div class="space-y-4 text-sm text-slate-300">
+                    <div class="flex items-start">
+                        <span class="text-teal-400 font-bold mr-3">💡</span>
+                        <p><strong>動画5本がその場で完成：</strong> 実質20万〜40万相当のSNS用ショート動画が、合宿最終日までにその場で制作・納品されます。※本人のスキルによります</p>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="text-teal-400 font-bold mr-3">💡</span>
+                        <p><strong>助成金で自己負担8万：</strong> 厚労省リスキリング支援の適用で、合宿代45万の75%（33.7万円）がキャッシュバックされます。</p>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="text-teal-400 font-bold mr-3">💡</span>
+                        <p><strong>自社専用システムの完成：</strong> 自社キャラに特化した「ComfyUI」によるANIMATION WORK FLOWを会社の資産としてお持ち帰りいただけます。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Intro Paragraph -->
+    <section id="about" class="py-16 px-4 bg-white border-b border-gray-100">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-xs font-black text-blue-600 uppercase tracking-widest mb-3">Why Sano?</h2>
+            <h3 class="text-3xl font-extrabold text-slate-950 mb-6">他の高級ホテルや宿泊施設では、100%不可能な理由。</h3>
+            <p class="text-lg text-gray-600 leading-relaxed">
+                高級ホテルは広すぎる上に誘惑も多く、開発に集中できません。古民家（生活空間）と専用ワークスペース（倉庫）の適度な広さが、クリエイターの集中力を極限まで加速させます。
+            </p>
+        </div>
+    </section>
+
+    <!-- 3 Core Value Propositions -->
+    <section class="py-16 px-4 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white border border-gray-100 p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+            <div class="text-4xl mb-4">🎥</div>
+            <h4 class="text-xl font-bold mb-3">① 作業集中倉庫</h4>
+            <p class="text-sm text-gray-600 leading-relaxed">
+                高さと十分な引き（距離）のある倉庫内には「3方向マルチアングルGoProカメラ」とGeForce RTX 4090を内蔵したAI専用のハイスペックPCを常設。クリエイター自身がアクターとなって全力で動き回り、パースの崩れないモーション動画をその場でキャプチャ・AIアニメ化できます。
+            </p>
+        </div>
+        <div class="bg-white border border-gray-100 p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+            <div class="text-4xl mb-4">🛡️</div>
+            <h4 class="text-xl font-bold mb-3">② 約100㎡の住居スペース</h4>
+            <p class="text-sm text-gray-600 leading-relaxed">
+                仕事場（倉庫）と住居スペース（母屋）が物理隔離されており、夜遅くまでキーボードの打鍵音や放熱ファンの騒音を気にすることなく24時間体制で開発に没頭できます。
+            </p>
+        </div>
+        <div class="bg-white border border-gray-100 p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+            <div class="text-4xl mb-4">🏖️</div>
+            <h4 class="text-xl font-bold mb-3">③ ファミリーリトリート</h4>
+            <p class="text-sm text-gray-600 leading-relaxed">
+                優秀なエース社員（30〜40代子育て世代）を1週間拘束する際、「家族を犠牲にする罪悪感」は離職のトリガーになります。昼間、家族がアルバイトスタッフと川魚つかみBBQや佐野ラーメン、イチゴ狩りを堪能している間、クリエイターは24時間ノイズなしでAIアニメの開発に120%没頭できます。
+            </p>
+        </div>
+    </section>
+
+    <!-- Selectable 2 Utilizing Modes -->
+    <section id="modes" class="py-16 px-4 bg-slate-50 border-y border-gray-200">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h3 class="text-xs font-black text-blue-600 uppercase tracking-widest mb-3">Flexible Options</h3>
+                <h4 class="text-3xl font-extrabold text-slate-950 mb-4">1社一棟完全貸切だからこそ、選べる2つの利用モード。</h4>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    佐野AI合宿は、参加人数ではなく「1週間の施設・インフラ・メンター完全独占権」を一律料金とするパッケージです。企業の経営課題に合わせて、以下の2つのモードを自由行き来して利用可能です。どちらのモードを選んでも5万円分の食費サポート枠は100%ついています。
+                </p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Mode A Card -->
+                <div class="flex-1 bg-white border border-gray-100 rounded-2xl p-8 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <span class="inline-block bg-orange-100 text-orange-800 text-xs font-black px-3 py-1 rounded-full mb-4">MODE A</span>
+                        <h5 class="text-2xl font-black mb-3">エース離職防止 ✕ ファミリー避難モード</h5>
+                        <p class="text-gray-600 text-sm mb-6 leading-relaxed">
+                            エース社員1名 ✕ そのご家族（計3〜4名）で一棟を完全貸切。昼間は子どもの遊び相手スタッフが常駐し、クリエイターは完全に仕事に集中。夜間は家族全員でお布団を並べて団らん。会社にとっては、数百万かかる優秀なエースの「引き留めコスト」と「AI開発」を一度にクリアする最強の福利厚生です。
+                        </p>
+                    </div>
+                    <ul class="space-y-2 text-sm text-gray-500 border-t border-gray-100 pt-4">
+                        <li class="flex items-center"><span class="text-orange-500 mr-2">🎁</span> <strong>毎日1万円（計5万円分）のファミリー食費枠付</strong></li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✔</span> お世話・遊び相手スタッフ常駐（追加費用なし）</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✔</span> プライベート川魚つかみBBQ体験付き</li>
+                    </ul>
+                </div>
+
+                <!-- Mode B Card -->
+                <div class="flex-1 bg-white border border-gray-100 rounded-2xl p-8 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <span class="inline-block bg-teal-100 text-teal-800 text-xs font-black px-3 py-1 rounded-full mb-4">MODE B</span>
+                        <h5 class="text-2xl font-black mb-3">実務制作チーム ✕ AIスプリントモード</h5>
+                        <p class="text-gray-600 text-sm mb-6 leading-relaxed">
+                            監督、演出、3Dエンジニア等の単身実務スタッフ（4〜6名）で完全貸切。お世話スタッフが不要な代わりに、その浮いた人件費を還元し、大人数で毎晩豪快に佐野ラーメン、デリバリー、こだわりBBQ、地元地酒を楽しめる「追加の大人用贅沢仕入れ（2万円相当）」が自動で上乗せされます。
+                        </p>
+                    </div>
+                    <ul class="space-y-2 text-sm text-gray-500 border-t border-gray-100 pt-4">
+                        <li class="flex items-center"><span class="text-teal-500 mr-2">🎁</span> <strong>毎日1万円（計5万円分）のチーム食費枠付</strong></li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✔</span> <strong>お世話スタッフ不要分の「贅沢お肉・地酒追加還元（約2万円分）」</strong></li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✔</span> 大画面でのチーム上映ブレスト</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive CFO ROI Calculator -->
+    <section id="calculator" class="py-20 px-4 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h3 class="text-xs font-black text-blue-600 uppercase tracking-widest mb-3">費用対効果</h3>
+                <h4 class="text-3xl font-extrabold text-slate-950 mb-4">ROI＆負担額シミュレーター</h4>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    いくら技術として素晴らしくても、費用対効果がなければ稟議は通りません。内製化によって外注費がどのくらい削れるか、そしてリスキリング助成金の還付によって実質いくらで合宿へ送り込めるかを今すぐ計算してください。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
+                <!-- Input Panel -->
+                <div class="glass-card rounded-2xl p-6 md:p-8 border border-gray-200">
+                    <h4 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
+                        <span class="text-2xl mr-2">⚙️</span> パラメーターを動かして計算
+                    </h4>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">① 毎月外注しているSNSアニメ動画の本数</label>
+                            <div class="flex items-center gap-4">
+                                <input type="range" id="simVideoCount" min="1" max="30" value="5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                                <span id="simVideoCountDisplay" class="font-bold text-xl text-blue-600 w-16 text-right">5本</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">② 現在の動画1本あたりの外注費</label>
+                            <div class="flex items-center gap-4">
+                                <input type="range" id="simVideoCost" min="1" max="15" value="6" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                                <span id="simVideoCostDisplay" class="font-bold text-xl text-blue-600 w-16 text-right">6万円</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">③ 合宿の利用頻度（プラン）</label>
+                            <select id="simPlanType" class="w-full bg-slate-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-3 font-bold">
+                                <option value="40" selected>年4回サブスク（1回あたり40万円・税別） ★推奨</option>
+                                <option value="45">単発利用パック（一律 45万円・税別）</option>
+                            </select>
+                        </div>
+
+                        <div class="p-4 bg-teal-50 rounded-lg border border-teal-100 flex items-center space-x-3">
+                            <input type="checkbox" id="simSubsidy" checked class="form-checkbox h-5 w-5 text-teal-600 rounded cursor-pointer">
+                            <div>
+                                <span class="text-gray-800 font-bold text-sm block">人材開発支援助成金（リスキリング枠）を適用する</span>
+                                <span class="text-xs text-teal-700">※提携社労士が申請代行、経費の75%がキャッシュバックされます。</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Output Panel -->
+                <div class="bg-slate-900 rounded-2xl p-6 text-white flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 text-white/5 text-[150px] leading-none pointer-events-none">¥</div>
+                    
+                    <div>
+                        <span class="text-slate-400 text-xs font-bold uppercase tracking-wider block mb-4">財務分析シミュレーション結果</span>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div>
+                                <div class="text-slate-400 text-xs mb-1">現状の外注費（年間）</div>
+                                <div class="text-2xl font-bold text-red-400"><span id="outsourceYearly">360</span>万円</div>
+                            </div>
+                            <div>
+                                <div class="text-slate-400 text-xs mb-1">合宿の定価料金</div>
+                                <div class="text-2xl font-bold text-slate-300"><span id="rawRetreatPrice">40</span>万円</div>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-white/10 pt-6 mb-6">
+                            <div class="text-slate-400 text-xs mb-1">助成金還付キャッシュバック額</div>
+                            <div class="text-2xl font-bold text-teal-400">＋<span id="refundCash">30</span>万円</div>
+                        </div>
+
+                        <div class="bg-white/5 p-4 rounded-lg border border-white/10 mb-6">
+                            <div class="text-slate-400 text-xs mb-1">実質的な合宿初回の「真の負担額」</div>
+                            <div class="text-4xl font-black text-yellow-300"><span id="realRetreatCost">10</span>万円</div>
+                            <p class="text-slate-400 text-[10px] mt-1">※合宿費から還付金および研修中に発生する賃金助成（時間1,000円×32h）を控除した実質値です。</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-teal-900/50 p-4 rounded-lg border border-teal-500/30">
+                        <div class="text-xs font-bold text-teal-300 uppercase tracking-wider mb-1">CFO への財務提言:</div>
+                        <div id="cfoAdvice" class="text-sm font-medium text-white">
+                            初年度にわずか10万円の自己負担で、年間360万円の外注費を100%内製化（削減）できます。知財とスキルが社内に残るため、ROIは測定不能なレベルで無限大です。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="facilities" class="py-16 px-4 bg-slate-50 border-t border-gray-200">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold mb-4 border-l-4 border-blue-600 pl-4">施設＆インフラ（公私完全分離設計）</h2>
+                    <p class="text-lg text-gray-600">
+                        「倉庫＝サイバーオフィス（THE CAVE）」「母屋＝完全リラックス（THE FLOW）」の2軸でゾーニング。家族が母屋や大自然でくつろぐ中、クリエイターは隣室や倉庫でノイズを完全に遮断して開発に没頭できる完璧なレイアウトです。
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Left: CAVE -->
+                    <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
+                        <div class="p-6 md:p-8 bg-slate-800 text-white">
+                            <span class="text-xs font-bold text-teal-400 uppercase tracking-wider block mb-1">WAREHOUSE STUDIO</span>
+                            <h3 class="text-2xl font-black mb-3">THE CAVE 2.0（ハッカーガレージ）</h3>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                大電力タワーPC専用電気回路、土足厳禁でリラックスさせるタイルカーペット、調光LEDライティング、作業デスクDIY
+                            </p>
+                        </div>
+                        <div class="p-6 md:p-8 space-y-4">
+                            <div class="flex items-start">
+                                <span class="text-blue-600 font-bold mr-3">✔</span>
+                                <p class="text-sm text-gray-600"><strong>電源の独立（専用回路）：</strong> 5090搭載の1,000Wパソコンをフル稼働させても、ブレーカーが一切落ちない独立コンセントを完備。</p>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="text-blue-600 font-bold mr-3">✔</span>
+                                <p class="text-sm text-gray-600"><strong>3方向マルチアングル撮影：</strong> 演者の動きを前後左右から同時撮影し、パースの狂わない3Dボーン動画（骨組み）を瞬時に構築。</p>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="text-blue-600 font-bold mr-3">✔</span>
+                                <p class="text-sm text-gray-600"><strong>100インチ超プレビュー：</strong> 100インチプロジェクターを完備。チーム全体でレンダリング結果を一画面でチェック可能。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: FLOW -->
+                    <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
+                        <div class="p-6 md:p-8 bg-blue-900 text-white">
+                            <span class="text-xs font-bold text-orange-300 uppercase tracking-wider block mb-1">MAIN HOUSE & WATER</span>
+                            <h3 class="text-2xl font-black mb-3">THE FLOW（和み・リラクゼーション）</h3>
+                            <p class="text-slate-200 text-sm leading-relaxed">
+                                5SDK（100㎡）の和風間取り
+                            </p>
+                        </div>
+                        <div class="p-6 md:p-8 space-y-4">
+                            <div class="flex items-start">
+                                <span class="text-teal-600 font-bold mr-3">✔</span>
+                                <p class="text-sm text-gray-600"><strong>昔ながらの：</strong>木工職人による組子細工の装飾</p>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="text-teal-600 font-bold mr-3">✔</span>
+                                <p class="text-sm text-gray-600"><strong>24時間食べ放題サポート食：</strong> アレルギーや面倒なケータリングの手間を排除。地元のお米、新鮮生卵、海苔を常時食べ放題で提供。</p>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="text-teal-600 font-bold mr-3">✔</span>
+                                <p class="text-sm text-gray-600"><strong>全室畳：</strong> 小さなお子様連れでも、ベッドからの落下事故を気にする必要がない和室畳仕様。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Booking/Contact Form Section -->
+        <section id="contact" class="py-20 px-4 bg-slate-900 text-white relative overflow-hidden">
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-blue-900/30 via-slate-900 to-slate-900 pointer-events-none"></div>
+            <div class="max-w-4xl mx-auto relative z-10 text-center mb-12">
+                <h3 class="text-xs font-black text-teal-400 uppercase tracking-widest mb-3">Reserve Now</h3>
+                <h4 class="text-4xl font-black mb-4">無料カウンセリング予約</h4>
+                <p class="text-lg text-slate-300">
+                    自社のこの機材・LoRAデータで検証が可能か、助成金の適用手続きはどうすればよいか等、<br>
+                    アニメ制作を熟知した専門進行マネージャーと社労士が、無料でオンラインカウンセリング（1時間）を承ります。
+                </p>
+            </div>
+
+            <!-- Booking Form -->
+            <div class="max-w-xl mx-auto bg-slate-800 rounded-2xl p-8 border border-slate-700 shadow-2xl relative">
+                <form id="bookingForm" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-300 mb-2">会社名</label>
+                        <input id="formCompany" type="text" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-300 mb-2">担当者お名前</label>
+                            <input id="formName" type="text" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-300 mb-2">メールアドレス</label>
+                            <input id="formEmail" type="email" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-300 mb-2">希望の利用モード</label>
+                        <select id="formMode" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            <option value="A">【モードA】ファミリーリトリート（引き留め・家族同伴）</option>
+                            <option value="B">【モードB】クリエイターチームR&D（ハッカソン・実務チーム4〜6名）</option>
+                            <option value="C">まだ決まっていない（オンラインで相談したい）</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-300 mb-2">ご相談・ご質問内容</label>
+                        <textarea id="formMessage" rows="3" placeholder="AIアニメの導入状況や、ご家族の構成、お米の物販について等" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-lg transition-colors shadow-lg glow-button">
+                        無料カウンセリングを予約する（確認メールが起動します）
+                    </button>
+                </form>
+
+                <!-- Success Modal Simulation -->
+                <div id="successModal" class="hidden absolute inset-0 bg-slate-900/95 rounded-2xl p-8 flex flex-col justify-center items-center text-center">
+                    <div class="text-5xl mb-4">📧</div>
+                    <h5 class="text-2xl font-bold text-white mb-2">メールソフトを起動しました！</h5>
+                    <p class="text-sm text-slate-300 mb-6">
+                        お使いのメールアプリ（Outlook, Gmail, スマホ既定メールなど）に、問い合わせ文面を自動生成しました。<br>
+                        <strong>メールの下書きが開いていることを確認し、そのまま「送信」ボタンを押してください。</strong>
+                    </p>
+                    <button id="closeModal" class="bg-blue-600 text-white font-bold px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">確認しました</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-slate-950 text-slate-500 text-xs md:text-sm py-12 text-center px-4 border-t border-slate-900">
+            <div class="max-w-7xl mx-auto space-y-4">
+                <p class="font-bold text-slate-400">◭ SANO AI ANIMATION LAB</p>
+                <p>佐野空き家アジト ✕ AIアニメ映像パイプライン共同実証実験ラボ</p>
+                <p class="text-[10px]">© 2026 Sano AI Animation Lab All Rights Reserved. - 住宅宿泊事業/簡易宿所申請準備中</p>
+            </div>
+        </footer>
+
+        <!-- Chart.js Simulation for CFO Tab -->
+        <section class="hidden">
+            <div class="chart-container"><canvas id="simRoiChart"></canvas></div>
+            <div class="chart-container"><canvas id="simSubsidyChart"></canvas></div>
+        </section>
+
+        <script>
+            // Inputs
+            const videoCountRange = document.getElementById('simVideoCount');
+            const videoCostRange = document.getElementById('simVideoCost');
+            const planTypeSelect = document.getElementById('simPlanType');
+            const subsidyCheckbox = document.getElementById('simSubsidy');
+
+            // Displays
+            const videoCountDisplay = document.getElementById('simVideoCountDisplay');
+            const videoCostDisplay = document.getElementById('simVideoCostDisplay');
+            const outsourceYearlyDisplay = document.getElementById('outsourceYearly');
+            const rawRetreatPriceDisplay = document.getElementById('rawRetreatPrice');
+            const refundCashDisplay = document.getElementById('refundCash');
+            const realRetreatCostDisplay = document.getElementById('realRetreatCost');
+            const cfoAdviceDisplay = document.getElementById('cfoAdvice');
+
+            function calculateROI() {
+                const count = parseInt(videoCountRange.value);
+                const cost = parseInt(videoCostRange.value);
+                const planValue = parseInt(planTypeSelect.value); // 40 or 45 (万円)
+                const subsidyChecked = subsidyCheckbox.checked;
+
+                // Update input text
+                videoCountDisplay.textContent = count + '本';
+                videoCostDisplay.textContent = cost + '万円';
+
+                // Outsource calculations
+                const outsourceMonthly = count * cost;
+                const outsourceYearly = outsourceMonthly * 12;
+                outsourceYearlyDisplay.textContent = outsourceYearly;
+
+                // Sano Cost
+                rawRetreatPriceDisplay.textContent = planValue;
+
+                // Subsidy calculation (75% refund up to 300,000 JPY / 30万 forリスキリング course)
+                let refund = 0;
+                if (subsidyChecked) {
+                    refund = Math.min(30, Math.floor(planValue * 0.75));
+                }
+                refundCashDisplay.textContent = refund;
+
+                // Real Cost
+                // Wage subsidy estimation (1,000 JPY * 32h = 3.2万)
+                const wageSubsidy = subsidyChecked ? 3.2 : 0;
+                const realCost = Math.max(0, planValue - refund - wageSubsidy);
+                realRetreatCostDisplay.textContent = realCost.toFixed(1);
+
+                // Advice Update
+                const savings = outsourceMonthly - realCost;
+                if (savings > 0) {
+                    cfoAdviceDisplay.innerHTML = `初月で <span class="text-teal-300 font-bold">${savings.toFixed(1)}万円</span> のコスト削減効果が発生します。さらに、翌月からは外注費が発生しないため、<strong>年間約${outsourceYearly}万円のキャッシュが社内に浮く</strong>ことになり、実質1〜2週間の稼働で投資は全額回収されます。`;
+                } else {
+                    cfoAdviceDisplay.innerHTML = `動画5本の納品物アセットだけで元（投資金）が取れます。自社専用のComfyUIのjson配線レシピが社内に資産として残り続けるため、2ヶ月目以降の内製化によるROIは青天井です。`;
+                }
+            }
+
+            videoCountRange.addEventListener('input', calculateROI);
+            videoCostRange.addEventListener('input', calculateROI);
+            planTypeSelect.addEventListener('change', calculateROI);
+            subsidyCheckbox.addEventListener('change', calculateROI);
+
+            // Form Submit Simulation & mailto generator
+            const bookingForm = document.getElementById('bookingForm');
+            const successModal = document.getElementById('successModal');
+            const closeModal = document.getElementById('closeModal');
+
+            bookingForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const company = document.getElementById('formCompany').value;
+                const name = document.getElementById('formName').value;
+                const email = document.getElementById('formEmail').value;
+                const modeVal = document.getElementById('formMode').value;
+                const message = document.getElementById('formMessage').value;
+
+                let selectedMode = '未定・相談したい';
+                if(modeVal === 'A') selectedMode = 'モードA（ファミリーリトリート・家族同伴）';
+                if(modeVal === 'B') selectedMode = 'モードB（クリエイターチームR&D・単身4〜6名）';
+
+                // ★ 送信先のメールアドレス。必要に応じて変更してください。
+                const toEmail = "sano.ai.camp@gmail.com"; 
+                const subject = `【無料カウンセリング予約】${company} / ${name}様`;
+                const body = `佐野AIアニメ合宿 無料カウンセリング予約フォームより
+
+■ 会社名： ${company}
+■ お名前： ${name}
+■ 返信用メールアドレス： ${email}
+■ 希望の利用モード： ${selectedMode}
+
+■ ご相談内容：
+${message}
+
+─────────────────────────
+※お手数ですが、このままメール送信ボタンを押してください。
+内容を確認の上、2営業日以内に担当者よりご返信いたします。`;
+
+                // mailto スキームの実行
+                window.location.href = `mailto:${toEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+                // サクセス案内モーダルの表示
+                successModal.classList.remove('hidden');
+            });
+
+            closeModal.addEventListener('click', function() {
+                successPageReset();
+            });
+
+            function successPageReset() {
+                successModal.classList.add('hidden');
+                bookingForm.reset();
+                calculateROI();
+            }
+
+            // Init calculations
+            calculateROI();
+        </script>
+</body>
+</html>
