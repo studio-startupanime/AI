@@ -4,14 +4,10 @@
      1. Header & Hero: Establishes the visual identity of "Sano AI Video Lab" and the core problem solved (1 sec/10,000 Yen).
      2. 3 Core Value Propositions: Explains Sano's unique offline physical benefits (The Sandbox, Military Security, Family Sanctuary) using modern, responsive flex card components.
      3. Two Utilizing Modes Toggle: Clearly illustrates that a single 450k JPY booking can be used as a Family retreat or as a Team R&D sprint.
-     4. Interactive CFO ROI Calculator: Embeds a fully interactive dynamic pricing and subsidy calculator. This visualizes the 75% Reskill Subsidy and displays Outsource Savings vs Sano Investment, with high CFO appeal.
-     5. Facilities Explorer: Offers styled tabs allowing users to explore "The Cave (Warehouse Studio)", "The Flow (The Sanctuary Bath)", and the "5-Day Flow".
-     6. Navigation & Booking Flow: Dynamic contact/booking form linking directly to Google Calendar and simulated booking success state using a Tailwind modal.
--->
-<!-- Visualization & Content Choices:
-     1. ROI Chart (Chart.js): Goal: Visualize financial return on Sano Investment. Method: Stacked bar chart showing Outsource Cost vs Sano Real Cost (Subsidy Applied). Justification: Graphs speak directly to financial decision makers (CFOs) and remove price objections.
-     2. Subsidy Breakdown (Chart.js Pie): Goal: Demonstrate how the 75% Reskilling subsidy applies to Sano's 400,000 JPY subscription fee. Method: Interactive Donut Chart. Justification: Clearly breaks down how the company only pays 100,000 JPY net after receiving the 300,000 JPY refund.
-     3. Mode Selectors (JS CSS toggling): Goal: Explain utilization versatility. Method: Toggle tabs with reactive content cards. Justification: Prevents text-heavy walls of content and keeps engagement high.
+     4. 5-Day Sprint Timeline Section: Added highly legible step-by-step visual timeline for the 5-day flow.
+     5. Interactive CFO ROI Calculator: Embeds a fully interactive dynamic pricing and subsidy calculator. This visualizes the 75% Reskill Subsidy and displays Outsource Savings vs Sano Investment, with high CFO appeal.
+     6. Facilities Explorer: Offers styled tabs allowing users to explore "The Cave (Warehouse Studio)", "The Flow (The Sanctuary Bath)", and the "5-Day Flow".
+     7. Navigation & Booking Flow: Dynamic contact/booking form linking directly to FormSubmit for background email redirection, with custom popups.
 -->
 <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
@@ -27,8 +23,6 @@
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap');
         body { font-family: 'Noto Sans JP', sans-serif; background-color: #F8F9FA; color: #1A202C; scroll-behavior: smooth; }
         .chart-container { position: relative; width: 100%; height: 320px; max-height: 350px; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
         .glow-button { transition: all 0.3s ease; box-shadow: 0 4px 14px 0 rgba(43, 108, 176, 0.4); }
         .glow-button:hover { box-shadow: 0 6px 20px 0 rgba(43, 108, 176, 0.6); transform: translateY(-1px); }
     </style>
@@ -50,8 +44,9 @@
                 <div class="hidden lg:flex space-x-8 items-center">
                     <a href="#about" class="text-sm font-bold text-gray-600 hover:text-blue-600 transition-colors">差別化の理由</a>
                     <a href="#modes" class="text-sm font-bold text-gray-600 hover:text-blue-600 transition-colors">選べる2つのモード</a>
+                    <a href="#timeline" class="text-sm font-bold text-gray-600 hover:text-blue-600 transition-colors">合宿スケジュール</a>
                     <a href="#calculator" class="text-sm font-bold text-gray-600 hover:text-blue-600 transition-colors">費用対効果</a>
-                    <a href="#facilities" class="text-sm font-bold text-gray-600 hover:text-blue-600 transition-colors">アジト施設案内</a>
+                    <a href="#facilities" class="text-sm font-bold text-gray-600 hover:text-blue-600 transition-colors">施設案内</a>
                     <a href="#contact" class="bg-blue-600 text-white text-xs md:text-sm font-bold px-5 py-2.5 rounded-full hover:bg-blue-700 transition-colors glow-button">無料カウンセリング予約</a>
                 </div>
             </div>
@@ -68,10 +63,10 @@
                 </span>
                 <h1 class="text-4xl md:text-6xl font-black mb-6 leading-tight tracking-tight">
                     AIの進化に乗り遅れるな!<br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">5泊 6日の佐野R&D合宿。</span>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">5泊 5日の佐野R&D合宿。</span>
                 </h1>
                 <p class="text-lg text-slate-300 font-light mb-8 leading-relaxed">
-                    田舎 of 古民家でAI集中開発合宿。<br>
+                    田舎の古民家でAI集中開発合宿。<br>
                     仕事場（倉庫）と住居（母屋）を完全分離した企業向けの最先端技術研修プログラム。
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4">
@@ -119,7 +114,7 @@
             <div class="text-4xl mb-4">🎥</div>
             <h4 class="text-xl font-bold mb-3">① 作業集中倉庫</h4>
             <p class="text-sm text-gray-600 leading-relaxed">
-                高さと十分な引き（距離）のある倉庫内には「3方向マルチアングルGoProカメラ」とGeForce RTX 4090を内蔵したAI専用のハイスペックPCを常設。クリエイター自身がアクターとなって全力で動き回り、パースの崩れないモーション動画をその場でキャプチャ・AIアニメ化できます。
+                高さと十分な引き（距離）のある倉庫内には「3方向マルチアングルGoProカメラ」とGeForce RTX 5090を内蔵したAI専用のハイスペックPCを常設。クリエイター自身がアクターとなって全力で動き回り、パースの崩れないモーション動画をその場でキャプチャ・AIアニメ化できます。
             </p>
         </div>
         <div class="bg-white border border-gray-100 p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
@@ -154,9 +149,9 @@
                 <div class="flex-1 bg-white border border-gray-100 rounded-2xl p-8 shadow-sm flex flex-col justify-between">
                     <div>
                         <span class="inline-block bg-orange-100 text-orange-800 text-xs font-black px-3 py-1 rounded-full mb-4">MODE A</span>
-                        <h5 class="text-2xl font-black mb-3">エース離職防止 ✕ ファミリー避難モード</h5>
+                        <h5 class="text-2xl font-black mb-3">エース離職防止 ✕ ファミリーリトリートモード</h5>
                         <p class="text-gray-600 text-sm mb-6 leading-relaxed">
-                            エース社員1名 ✕ そのご家族（計3〜4名）で一棟を完全貸切。昼間は子どもの遊び相手スタッフが常駐し、クリエイターは完全に仕事に集中。夜間は家族全員でお布団を並べて団らん。会社にとっては、数百万かかる優秀なエースの「引き留めコスト」と「AI開発」を一度にクリアする最強의 福利厚生です。
+                            エース社員1名 ✕ そのご家族（計3〜4名）で一棟を完全貸切。昼間は子どもの遊び相手スタッフが常駐し、クリエイターは完全に仕事に集中。夜間は家族全員でお布団を並べて団らん。会社にとっては、数百万かかる優秀なエースの「引き留めコスト」と「AI開発」を一度にクリアする最強の福利厚生です。
                         </p>
                     </div>
                     <ul class="space-y-2 text-sm text-gray-500 border-t border-gray-100 pt-4">
@@ -185,8 +180,96 @@
         </div>
     </section>
 
+    <!-- 5-Day Sprint Timeline Section (Newly Added) -->
+    <section id="timeline" class="py-20 px-4 bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h3 class="text-xs font-black text-blue-600 uppercase tracking-widest mb-3">Timeline</h3>
+                <h4 class="text-3xl font-extrabold text-slate-950 mb-4">R&D合宿 5泊5日の集中開発タイムライン</h4>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    ツールのお勉強ではなく「自社専用の自動化ライン」を組み立て、実物アセットを持ち帰るための超高効率5日間。
+                </p>
+            </div>
+
+            <!-- Horizontal Timeline / Grid Steps -->
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6 relative">
+                <!-- Day 1 -->
+                <div class="bg-slate-50 border border-gray-200 rounded-xl p-5 relative flex flex-col justify-between hover:shadow-md transition-shadow">
+                    <div>
+                        <div class="text-blue-600 text-xs font-black tracking-widest uppercase mb-1">Day 1（月）</div>
+                        <h5 class="text-base font-bold text-slate-900 mb-2">チェックイン・アセット展開</h5>
+                        <p class="text-xs text-gray-600 leading-relaxed">
+                            アジトへ到着、機材のセットアップ。東京から持参した自社3D、原画、キャラLoRAを5090常設PCへ。
+                        </p>
+                    </div>
+                    <div class="mt-4 border-t border-gray-200 pt-2 text-[10px] text-gray-400 font-bold">14:00〜 現地ディレクター案内</div>
+                </div>
+
+                <!-- Day 2 -->
+                <div class="bg-slate-50 border border-gray-200 rounded-xl p-5 relative flex flex-col justify-between hover:shadow-md transition-shadow">
+                    <div>
+                        <div class="text-blue-600 text-xs font-black tracking-widest uppercase mb-1">Day 2（火）</div>
+                        <h5 class="text-base font-bold text-slate-900 mb-2">作画＆モーション変換</h5>
+                        <p class="text-xs text-gray-600 leading-relaxed">
+                            スマホの演技動画や3D骨格から、ControlNetを介してAIアニメへと一貫変換するコアパイプラインをビルド。
+                        </p>
+                    </div>
+                    <div class="mt-4 border-t border-gray-200 pt-2 text-[10px] text-teal-600 font-bold">★20:00 メンターデバッグ①</div>
+                </div>
+
+                <!-- Day 3 -->
+                <div class="bg-slate-50 border border-gray-200 rounded-xl p-5 relative flex flex-col justify-between hover:shadow-md transition-shadow">
+                    <div>
+                        <div class="text-blue-600 text-xs font-black tracking-widest uppercase mb-1">Day 3（水）</div>
+                        <h5 class="text-base font-bold text-slate-900 mb-2">脳の物理リセット＆中間バグ潰し</h5>
+                        <p class="text-xs text-gray-600 leading-relaxed">
+                            日中は川魚つかみBBQやサウナ温泉で脳を徹底リフレッシュ。夜間は動画の破綻やチラつき（フリッカー）を消去。
+                        </p>
+                    </div>
+                    <div class="mt-4 border-t border-gray-200 pt-2 text-[10px] text-teal-600 font-bold">★20:00 メンターデバッグ②</div>
+                </div>
+
+                <!-- Day 4 -->
+                <div class="bg-slate-50 border border-gray-200 rounded-xl p-5 relative flex flex-col justify-between hover:shadow-md transition-shadow">
+                    <div>
+                        <div class="text-blue-600 text-xs font-black tracking-widest uppercase mb-1">Day 4（木）</div>
+                        <h5 class="text-base font-bold text-slate-900 mb-2">背景美術コンポジット</h5>
+                        <p class="text-xs text-gray-600 leading-relaxed">
+                            3D背景の法線や深度からパースの狂わない手描き風美術を生成。物置ブースで簡易アテレコ音声を収録して結合。
+                        </p>
+                    </div>
+                    <div class="mt-4 border-t border-gray-200 pt-2 text-[10px] text-teal-600 font-bold">★20:00 メンターデバッグ③</div>
+                </div>
+
+                <!-- Day 5 -->
+                <div class="bg-slate-50 border border-gray-200 rounded-xl p-5 relative flex flex-col justify-between hover:shadow-md transition-shadow">
+                    <div>
+                        <div class="text-blue-600 text-xs font-black tracking-widest uppercase mb-1">Day 5（金）</div>
+                        <h5 class="text-base font-bold text-slate-900 mb-2">最終レンダリングスプリント</h5>
+                        <p class="text-xs text-gray-600 leading-relaxed">
+                            倉庫の100インチ超プロジェクターで大迫力上映。一貫性や尺を最終調整し、完全なPVプロトタイプを書き出し。
+                        </p>
+                    </div>
+                    <div class="mt-4 border-t border-gray-200 pt-2 text-[10px] text-gray-400 font-bold">24h 倉庫サイバー室独占</div>
+                </div>
+
+                <!-- Day 6 -->
+                <div class="bg-slate-50 border border-gray-200 rounded-xl p-5 relative flex flex-col justify-between hover:shadow-md transition-shadow">
+                    <div>
+                        <div class="text-blue-600 text-xs font-black tracking-widest uppercase mb-1">Day 6（土）</div>
+                        <h5 class="text-base font-bold text-slate-900 mb-2">成果報告会 ➔ 東京へ帰還</h5>
+                        <p class="text-xs text-gray-600 leading-relaxed">
+                            構築したComfyUI配線と動画を東京の役員へオンライン発表。機材撤収し退所。
+                        </p>
+                    </div>
+                    <div class="mt-4 border-t border-gray-200 pt-2 text-[10px] text-gray-400 font-bold">〜12:00 チェックアウト</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Interactive CFO ROI Calculator -->
-    <section id="calculator" class="py-20 px-4 bg-white">
+    <section id="calculator" class="py-20 px-4 bg-slate-50">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-12">
                 <h3 class="text-xs font-black text-blue-600 uppercase tracking-widest mb-3">費用対効果</h3>
@@ -198,7 +281,7 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
                 <!-- Input Panel -->
-                <div class="glass-card rounded-2xl p-6 md:p-8 border border-gray-200">
+                <div class="glass-card bg-white rounded-2xl p-6 md:p-8 border border-gray-200">
                     <h4 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
                         <span class="text-2xl mr-2">⚙️</span> パラメーターを動かして計算
                     </h4>
@@ -271,7 +354,7 @@
                     <div class="bg-teal-900/50 p-4 rounded-lg border border-teal-500/30">
                         <div class="text-xs font-bold text-teal-300 uppercase tracking-wider mb-1">CFO への財務提言:</div>
                         <div id="cfoAdvice" class="text-sm font-medium text-white">
-                            初年度にわずか10万円の自己負担で、年間360万円の外注費を100%内製化（削減）できます。知財とスキルが社内に残るため、ROIは測定不能なレベルで無限大です。
+                            初年度にわずか10万円の自己負担で、年間360万円の外注費を100%内製化（削減）できます。知財とスキルが社内に残るというのが最大のメリットです。
                         </div>
                     </div>
                 </div>
@@ -325,7 +408,7 @@
                         <div class="p-6 md:p-8 space-y-4">
                             <div class="flex items-start">
                                 <span class="text-teal-600 font-bold mr-3">✔</span>
-                                <p class="text-sm text-gray-600"><strong>昔ながらの：</strong>木工職人による組子細工の装飾</p>
+                                <p class="text-sm text-gray-600"><strong>昔ながらの古民家：</strong>木工職人による組子細工の装飾など風情のある空間</p>
                             </div>
                             <div class="flex items-start">
                                 <span class="text-teal-600 font-bold mr-3">✔</span>
@@ -383,7 +466,7 @@
 
                     <div>
                         <label class="block text-sm font-bold text-slate-300 mb-2">ご相談・ご質問内容</label>
-                        <textarea id="formMessage" rows="3" placeholder="AIアニメの導入状況等" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+                        <textarea id="formMessage" rows="3" placeholder="AIアニメの導入状況や、ご家族の構成、お米の物販について等" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
                     </div>
 
                     <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-lg transition-colors shadow-lg glow-button">
@@ -472,7 +555,7 @@
                 if (savings > 0) {
                     cfoAdviceDisplay.innerHTML = `初月で <span class="text-teal-300 font-bold">${savings.toFixed(1)}万円</span> のコスト削減効果が発生します。さらに、翌月からは外注費が発生しないため、<strong>年間約${outsourceYearly}万円のキャッシュが社内に浮く</strong>ことになり、実質1〜2週間の稼働で投資は全額回収されます。`;
                 } else {
-                    cfoAdviceDisplay.innerHTML = `動画5本の納品物アセットだけで元（投資金）が取れます。自社専用のComfyUIのjson配線レシピが社内に資産として残り続けるため、2ヶ月目以降の内製化によるROIは青天井です。`;
+                    cfoAdviceDisplay.innerHTML = `動画5本の納品物アセットだけで元（投資金）が取れます。自社専用のComfyUIのanimation workflowが社内に資産として残り続けるため、2ヶ月目以降の内製化によるROIは青天井です。`;
                 }
             }
 
@@ -503,7 +586,6 @@
                 const receiverEmail = "sugawara@studio-sakana.co.jp"; 
 
                 // Formspree等のパブリックサーバーレス送信エンドポイントを利用（完全にバックグラウンドで処理）
-                // 登録・キー不要のフリーエンドポイントをJS通信で叩き、相手先のメールに直撃させます。
                 const formData = new FormData();
                 formData.append('会社名', company);
                 formData.append('お名前', name);
